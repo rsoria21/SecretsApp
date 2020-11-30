@@ -1,4 +1,5 @@
 //jshint esversion:6
+require("dotenv").config();
 const express = require("express");
 const ejs = require("ejs");
 const bodyParser = require("body-parser");
@@ -29,9 +30,12 @@ const userSchema = new mongoose.Schema({
   password: String,
 });
 
-// this is used for encryption, also encryptedFields: encrypts stuff and you can add on by just adding on with a comma
-const secret = "Thisisourlittlesecret";
-userSchema.plugin(encrypt, { secret: secret, encryptedFields: ["password"] });
+// this is used for encryption, also encryptedFields: encrypts stuff and you can add on by just adding on with a comma, this also where secret key is held and fetched
+
+userSchema.plugin(encrypt, {
+  secret: process.env.SECRET,
+  encryptedFields: ["password"],
+});
 
 const User = new mongoose.model("User", userSchema);
 // this is the start of the redirecting
