@@ -29,12 +29,11 @@ const userSchema = new mongoose.Schema({
   password: String,
 });
 
-const User = new mongoose.model("User", userSchema);
-
 // this is used for encryption, also encryptedFields: encrypts stuff and you can add on by just adding on with a comma
 const secret = "Thisisourlittlesecret";
 userSchema.plugin(encrypt, { secret: secret, encryptedFields: ["password"] });
 
+const User = new mongoose.model("User", userSchema);
 // this is the start of the redirecting
 
 // takes you to the home route
