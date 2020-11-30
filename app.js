@@ -3,7 +3,8 @@ const express = require("express");
 const ejs = require("ejs");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const { stringify } = require("querystring");
+const encrypt = require("mongoose-encryption");
+// const { stringify } = require("querystring");
 
 const app = express();
 
@@ -23,11 +24,16 @@ mongoose.connect("mongodb://localhost:27017/userDB", {
 
 // this is the start of database stuff
 
-const userSchema = {
+const userSchema = new mongoose.Schema({
   email: String,
   password: String,
-};
+});
+
 const User = new mongoose.model("User", userSchema);
+
+// this is used for encryption, also encryptedFields: encrypts stuff and you can add on by just adding on with a comma
+const secret = "Thisisourlittlesecret";
+userSchema.plugin(encrypt, { secret: secret, encryptedFields: ["password"] });
 
 // this is the start of the redirecting
 
